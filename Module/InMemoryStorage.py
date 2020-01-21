@@ -7,7 +7,6 @@ class InMemoryStorage(Interface):
 
     def create(self, Author = "", Title = ""):
         record = {}
-        record.
         record_id = len(self.list) + 1
         record['id'] = record_id
         record['Author'] = Author
