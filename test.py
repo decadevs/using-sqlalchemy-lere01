@@ -1,36 +1,43 @@
 import unittest
-from Module.InMemoryStorage import InMemoryStorage
-from Module.PostgresTableStorage import PostgresTableStorage
+from Module.in_memory_storage import InMemoryStorage
+from Module.postgres_table_storage import PostgresTableStorage
 
 
 class TestClass(unittest.TestCase):
 
     def setUp(self):
-        InMemoryStorage().create(id = 1, author = "Aka", title = "Python Introduction")
-        PostgresTableStorage().create(id = 2, author = "Abdulfatai", title = "Using SQLAlchemy")
+        self.book_table = InMemoryStorage()
+        self.book_table.create(book_id = 1, Author = "Aka", Title = "Python Introduction")
+        self.book_table.create(book_id = 2, Author = "Abdulfatai", Title = "Using SQLAlchemy")
+        # PostgresTableStorage().create(Author = "Abdulfatai", Title = "Using SQLAlchemy")
         return super().setUp()
 
     def tearDown(self):
-        InMemoryStorage().delete(id=1)
-        InMemoryStorage().delete(id=2)
+        self.book_table.delete(book_id = 1)
+        self.book_table.delete(book_id = 2)
         return super().tearDown()
 
     def test_InMemoryStorage(self):
-        in_memomry = BooksManager(InMemoryStorage())
-
-        self.assertEqual(in_memomry.fetch(id = 1), 1)
-        self.assertDictEqual(in_memomry.fetch(author = "Aka"), {id: 1, author: "Aka", title: "Python Introduction"})
-        self.assertDictEqual(in_memomry.fetch(title = "Ruby", author = "Aka"), {id: 1, author: "Aka", title: "Python Introduction"})
-        self.assertListEqual(in_memomry.all(), [{id: 1, author: "Aka", title: "Python Introduction"}, {id: 2, author: "Abdulfatai", title: "Using SQLAlchemy"}])
+        in_memomry = self.book_table
+        self.assertDictEqual(in_memomry.fetch(book_id = 1), {'id': 1, 'Author': "Aka", 'Title': "Python Introduction"})
+        self.assertDictEqual(in_memomry.fetch(Author = "Aka"), {'id': 1, 'Author': "Aka", 'Title': "Python Introduction"})
+        self.assertDictEqual(in_memomry.fetch(Title = "Ruby", Author = "Aka"), {'id': 1, 'Author': "Aka", 'Title': "Python Introduction"})
+        self.assertDictEqual(in_memomry.all(), {1: {'id': 1, 'Author': "Aka", 'Title': "Python Introduction"}, 2: {'id': 2, 'Author': "Abdulfatai", 'Title': "Using SQLAlchemy"}})
 
 
     def test_PostgresTableStorage(self):
-        in_table = BooksManager(PostgresTableStorage())
+        in_table = PostgresTableStorage('book_manager.db')
 
-        self.assertEqual(in_table.fetch(id = 2), 2)
-        self.assertDictEqual(in_table.fetch(author = "Abdulfatai"), {id: 2, author: "Abdulfatai", title: "Using SQLAlchemy"})
-        self.assertDIctEqual(in_table.fetch(title = "Using SQLAlchemy", author = "Abdulfatai"), {id: 2, author: "Abdulfatai", title: "Using SQLAlchemy"})
-        self.assertListEqual(in_table.all(), [{id: 1, author: "Aka", title: "Python Introduction"}, {id: 2, author: "Abdulfatai", title: "Using SQLAlchemy"}])
+        in_table.create(book_id = 1, Author = "Aka", Title = "Python Introduction")
+        in_table.create(book_id = 2, Author = "Abdulfatai", Title = "Using SQLAlchemy")
+
+        self.assertDictEqual(in_table.fetch(book_id = 1), {'id': '1', 'Author': "Aka", 'Title': "Python Introduction"})
+        self.assertDictEqual(in_table.fetch(Author = "Aka"), {'id': '1', 'Author': "Aka", 'Title': "Python Introduction"})
+        self.assertDictEqual(in_table.fetch(Title = "Ruby", Author = "Aka"), {'id': '1', 'Author': "Aka", 'Title': "Python Introduction"})
+        self.assertDictEqual(in_table.all(), {1: {'id': '1', 'Author': "Aka", 'Title': "Python Introduction"}, 2: {'id': '2', 'Author': "Abdulfatai", 'Title': "Using SQLAlchemy"}})
+
+        in_table.delete(book_id = 1)
+        self.assertDictEqual(in_table.fetch(book_id = 1), {})
 
 
 
