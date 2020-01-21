@@ -1,4 +1,4 @@
-from Module.Interface import Interface
+from Interface import Interface
 
 class InMemoryStorage(Interface):
 
