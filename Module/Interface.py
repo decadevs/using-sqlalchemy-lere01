@@ -3,11 +3,11 @@ from abc import ABC, abstractmethod
 class Interface(ABC):
 
     @abstractmethod
-    def read_all(self):
+    def all(self):
         pass
     
     @abstractmethod
-    def read(self):
+    def fetch(self):
         pass
 
     @abstractmethod
@@ -17,3 +17,5 @@ class Interface(ABC):
     @abstractmethod
     def create(self):
         pass
+
+
