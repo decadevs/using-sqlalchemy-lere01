@@ -3,3 +3,4 @@ Include/
 Scripts/
 Lib/
 __pycache__/
+book_manager.db

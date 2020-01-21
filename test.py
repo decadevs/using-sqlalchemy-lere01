@@ -1,5 +1,5 @@
 import unittest
-from Module.InMemoryStorage import InMemoryStorage
+from Module.in_memory_storage import InMemoryStorage
 # from Module.PostgresTableStorage import PostgresTableStorage
 
 
@@ -7,6 +7,7 @@ class TestClass(unittest.TestCase):
 
     def setUp(self):
         InMemoryStorage().create(book_id = 1, Author = "Aka", Title = "Python Introduction")
+        InMemoryStorage().create(book_id = 2, Author = "Abdulfatai", Title = "Using SQLAlchemy")
         # PostgresTableStorage().create(Author = "Abdulfatai", Title = "Using SQLAlchemy")
         return super().setUp()
 
