@@ -1,4 +1,4 @@
-from .interface import Interface
+from .Interface import Interface
 
 class InMemoryStorage(Interface):
 
@@ -42,14 +42,10 @@ class InMemoryStorage(Interface):
 
 
     def delete(self, book_id = None):
-        try:
-            book = self.books
+        book = self.books
 
-            for id in book:
-                if book[id]['id'] == book_id:
-                    del book[id]
-
-        except:
-            raise Exception('make sure the identity is correct')
+        key = [key for key, value in book.items() if value['id'] == book_id][0]
+        del book[key]
+            
 
             
