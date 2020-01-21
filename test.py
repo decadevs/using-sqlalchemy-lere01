@@ -1,6 +1,6 @@
 import unittest
 from Module.in_memory_storage import InMemoryStorage
-# from Module.PostgresTableStorage import PostgresTableStorage
+from Module.postgres_table_storage import PostgresTableStorage
 
 
 class TestClass(unittest.TestCase):
@@ -15,7 +15,6 @@ class TestClass(unittest.TestCase):
     def tearDown(self):
         self.book_table.delete(book_id = 1)
         self.book_table.delete(book_id = 2)
-        # PostgresTableStorage().delete(id=2)
         return super().tearDown()
 
     def test_InMemoryStorage(self):
@@ -26,13 +25,19 @@ class TestClass(unittest.TestCase):
         self.assertDictEqual(in_memomry.all(), {1: {'id': 1, 'Author': "Aka", 'Title': "Python Introduction"}, 2: {'id': 2, 'Author': "Abdulfatai", 'Title': "Using SQLAlchemy"}})
 
 
-    # def test_PostgresTableStorage(self):
-    #     in_table = BooksManager(PostgresTableStorage())
+    def test_PostgresTableStorage(self):
+        in_table = PostgresTableStorage('book_manager.db')
 
-    #     self.assertEqual(in_table.fetch(book_id = 2), 2)
-    #     self.assertDictEqual(in_table.fetch(Author = "Abdulfatai"), {id: 2, Author: "Abdulfatai", Title: "Using SQLAlchemy"})
-    #     self.assertDIctEqual(in_table.fetch(Title = "Using SQLAlchemy", Author = "Abdulfatai"), {id: 2, Author: "Abdulfatai", Title: "Using SQLAlchemy"})
-    #     self.assertListEqual(in_table.all(), {1: {id: 1, Author: "Aka", Title: "Python Introduction"}, 2: {id: 2, Author: "Abdulfatai", Title: "Using SQLAlchemy"}})
+        in_table.create(book_id = 1, Author = "Aka", Title = "Python Introduction")
+        in_table.create(book_id = 2, Author = "Abdulfatai", Title = "Using SQLAlchemy")
+
+        self.assertDictEqual(in_table.fetch(book_id = 1), {'id': '1', 'Author': "Aka", 'Title': "Python Introduction"})
+        self.assertDictEqual(in_table.fetch(Author = "Aka"), {'id': '1', 'Author': "Aka", 'Title': "Python Introduction"})
+        self.assertDictEqual(in_table.fetch(Title = "Ruby", Author = "Aka"), {'id': '1', 'Author': "Aka", 'Title': "Python Introduction"})
+        self.assertDictEqual(in_table.all(), {1: {'id': '1', 'Author': "Aka", 'Title': "Python Introduction"}, 2: {'id': '2', 'Author': "Abdulfatai", 'Title': "Using SQLAlchemy"}})
+
+        in_table.delete(book_id = 1)
+        self.assertDictEqual(in_table.fetch(book_id = 1), {})
 
 
 
