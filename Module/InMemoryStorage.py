@@ -1,4 +1,4 @@
-from Interface import Interface
+from .Interface import Interface
 
 class InMemoryStorage(Interface):
 
@@ -7,7 +7,7 @@ class InMemoryStorage(Interface):
 
     def create(self, Author = "", Title = ""):
         record = {}
-        record_id = len(self.list) + 1
+        record_id = len(self.books) + 1
         record['id'] = record_id
         record['Author'] = Author
         record['Title'] = Title
@@ -17,11 +17,11 @@ class InMemoryStorage(Interface):
     def all(self):
         return self.books
 
-    def fetch(self, id = None, Author = None, Title = None):
+    def fetch(self, id = None, Author = "", Title = ""):
         if id != None:
             return self.books.get(id)
 
-        elif Author != None:
+        elif Author != "":
             book = self.books
 
             for id in book:
@@ -29,7 +29,7 @@ class InMemoryStorage(Interface):
                     return book.get(id)
 
 
-        elif Title != None:
+        elif Title != "":
             book = self.books
 
             for id in book:
