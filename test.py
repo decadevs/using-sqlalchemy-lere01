@@ -6,18 +6,20 @@ from Module.in_memory_storage import InMemoryStorage
 class TestClass(unittest.TestCase):
 
     def setUp(self):
-        InMemoryStorage().create(book_id = 1, Author = "Aka", Title = "Python Introduction")
-        InMemoryStorage().create(book_id = 2, Author = "Abdulfatai", Title = "Using SQLAlchemy")
+        self.book_table = InMemoryStorage()
+        self.book_table.create(book_id = 1, Author = "Aka", Title = "Python Introduction")
+        self.book_table.create(book_id = 2, Author = "Abdulfatai", Title = "Using SQLAlchemy")
         # PostgresTableStorage().create(Author = "Abdulfatai", Title = "Using SQLAlchemy")
         return super().setUp()
 
     def tearDown(self):
-        InMemoryStorage().delete(book_id=1)
+        self.book_table.delete(book_id = 1)
+        self.book_table.delete(book_id = 2)
         # PostgresTableStorage().delete(id=2)
         return super().tearDown()
 
     def test_InMemoryStorage(self):
-        in_memomry = InMemoryStorage()
+        in_memomry = self.book_table
         self.assertDictEqual(in_memomry.fetch(book_id = 1), {'id': 1, 'Author': "Aka", 'Title': "Python Introduction"})
         self.assertDictEqual(in_memomry.fetch(Author = "Aka"), {'id': 1, 'Author': "Aka", 'Title': "Python Introduction"})
         self.assertDictEqual(in_memomry.fetch(Title = "Ruby", Author = "Aka"), {'id': 1, 'Author': "Aka", 'Title': "Python Introduction"})
