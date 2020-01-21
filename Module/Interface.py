@@ -7,7 +7,7 @@ class Interface(ABC):
         pass
     
     @abstractmethod
-    def fetch(self):
+    def fetch(self, **params):
         pass
 
     @abstractmethod
@@ -15,7 +15,7 @@ class Interface(ABC):
         pass
 
     @abstractmethod
-    def create(self):
+    def create(self, **params):
         pass
 
 
