@@ -1,10 +1,10 @@
-import sqlite3
 from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
+import psycopg2
 
+# create connection engine
+database_engine = create_engine('postgresql+psycopg2://postgres:password@127.0.0.1:5432/postgres')
 
-# create database connectivity
-database_engine = create_engine('sqlite:///book_manager.db', echo = True)
 
 # instantiate declarative base class for describing tables by defining classes (declarative)
 Base = declarative_base()
