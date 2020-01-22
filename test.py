@@ -34,7 +34,7 @@ class TestClass(unittest.TestCase):
         self.assertDictEqual(in_table.fetch(book_id = '1'), {'id': '1', 'Author': "Aka", 'Title': "Python Introduction"})
         self.assertDictEqual(in_table.fetch(Author = "Aka"), {'id': '1', 'Author': "Aka", 'Title': "Python Introduction"})
         self.assertDictEqual(in_table.fetch(Title = "Ruby", Author = "Aka"), {'id': '1', 'Author': "Aka", 'Title': "Python Introduction"})
-        self.assertDictEqual(in_table.all(), {1: {'id': '1', 'Author': "Aka", 'Title': "Python Introduction"}, 2: {'id': '2', 'Author': "Abdulfatai", 'Title': "Using SQLAlchemy"}})
+        self.assertListEqual(in_table.all(), [{'id': '1', 'Author': "Aka", 'Title': "Python Introduction"}, {'id': '2', 'Author': "Abdulfatai", 'Title': "Using SQLAlchemy"}])
 
         in_table.delete(book_id = '1')
         in_table.delete(book_id = '2')
