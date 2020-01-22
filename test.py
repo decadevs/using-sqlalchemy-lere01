@@ -26,18 +26,19 @@ class TestClass(unittest.TestCase):
 
 
     def test_PostgresTableStorage(self):
-        in_table = PostgresTableStorage('book_manager.db')
+        in_table = PostgresTableStorage(database_name = 'postgres', username = 'postgres', password = 'password', host = '127.0.0.1:5432')
 
         in_table.create(book_id = 1, Author = "Aka", Title = "Python Introduction")
         in_table.create(book_id = 2, Author = "Abdulfatai", Title = "Using SQLAlchemy")
 
-        self.assertDictEqual(in_table.fetch(book_id = 1), {'id': '1', 'Author': "Aka", 'Title': "Python Introduction"})
+        self.assertDictEqual(in_table.fetch(book_id = '1'), {'id': '1', 'Author': "Aka", 'Title': "Python Introduction"})
         self.assertDictEqual(in_table.fetch(Author = "Aka"), {'id': '1', 'Author': "Aka", 'Title': "Python Introduction"})
         self.assertDictEqual(in_table.fetch(Title = "Ruby", Author = "Aka"), {'id': '1', 'Author': "Aka", 'Title': "Python Introduction"})
         self.assertDictEqual(in_table.all(), {1: {'id': '1', 'Author': "Aka", 'Title': "Python Introduction"}, 2: {'id': '2', 'Author': "Abdulfatai", 'Title': "Using SQLAlchemy"}})
 
-        in_table.delete(book_id = 1)
-        self.assertDictEqual(in_table.fetch(book_id = 1), {})
+        in_table.delete(book_id = '1')
+        in_table.delete(book_id = '2')
+        self.assertDictEqual(in_table.fetch(book_id = '1'), {})
 
 
 

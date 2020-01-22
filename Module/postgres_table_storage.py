@@ -6,11 +6,11 @@ from sqlalchemy.orm import sessionmaker
 
 
 class PostgresTableStorage(Interface):
-    def __init__(self, database_name):
+    def __init__(self, database_name = "", username = "", password = "", host = ""):
         self.db_name = database_name
-
+        
         # create database connectivity
-        url = 'sqlite:///' + self.db_name
+        url = 'postgresql+psycopg2://{}:{}@{}/{}'.format(username, password, host, database_name)
         db_connectivity = create_engine(url, echo = True)
 
         # create seesion object to handle the database
