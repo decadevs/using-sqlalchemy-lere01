@@ -1,4 +1,3 @@
-import sqlite3
 from Module.Interface import Interface
 from Module.create_database_table import Book
 from sqlalchemy import create_engine
