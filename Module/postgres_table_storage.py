@@ -33,7 +33,7 @@ class PostgresTableStorage(Interface):
 
     def all(self):
         session = self.session
-        record = {}
+        record = []
 
         # create a Query object
         db_query = session.query(Book)
@@ -48,7 +48,7 @@ class PostgresTableStorage(Interface):
             reco['id'] = row.book_id
             reco['Author'] = row.author
             reco['Title'] = row.title
-            record[row.record_id] = reco
+            record.append(reco)
 
         return record
 
